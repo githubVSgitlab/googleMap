@@ -554,7 +554,7 @@
                 </div> -->
             </div>
 
-            
+
         </div>
     </div>
 
@@ -589,10 +589,12 @@
             initAutocomplete();
         });
 
-        let mapCenter = { lat: -33.8688, lng: 151.2195 };
+        // let mapCenter = { lat: -33.8688, lng: 151.2195 };// 悉尼 
+        let mapCenter = { lat: 48.8668436, lng: 2.2721836 }// 法国
         const map = new google.maps.Map(document.getElementById("map"), {
             center: mapCenter,// lat维度，lng经度
-            zoom: 13,
+            // zoom: 13,
+            zoom: 7,
             mapTypeId: "roadmap",
             disableDefaultUI: true,// 拿掉地图上所有控制按钮，参考：https://segmentfault.com/a/1190000019788430
         });
@@ -687,74 +689,75 @@
          * @return {*}
          * @todo: 函数后续需要完成的内容
          */
-        const addMarkersClass = function (map) {
-            const locations = {
-                operaHouse: { lat: -33.8567844, lng: 151.213108 },
-                tarongaZoo: { lat: -33.8472767, lng: 151.2188164 },
-                // manlyBeach: { lat: -33.8209738, lng: 151.2563253 },
-                // hyderPark: { lat: -33.8690081, lng: 151.2052393 },
-                // theRocks: { lat: -33.8587568, lng: 151.2058246 },
-                // circularQuay: { lat: -33.858761, lng: 151.2055688 },
-                // harbourBridge: { lat: -33.852228, lng: 151.2038374 },
-                // kingsCross: { lat: -33.8737375, lng: 151.222569 },
-                // botanicGardens: { lat: -33.864167, lng: 151.216387 },
-                // museumOfSydney: { lat: -33.8636005, lng: 151.2092542 },
-                // maritimeMuseum: { lat: -33.869395, lng: 151.198648 },
-                // kingStreetWharf: { lat: -33.8665445, lng: 151.1989808 },
-                // aquarium: { lat: -33.869627, lng: 151.202146 },
-                // darlingHarbour: { lat: -33.87488, lng: 151.1987113 },
-                // barangaroo: { lat: - 33.8605523, lng: 151.1972205 }
-            }
+        const addMarkersClass = function (map, allShopCoordinate) {
+            let locations = allShopCoordinate
             const markers = [];
             for (const location in locations) {
                 const markerOptions = {
                     map: map,
                     position: locations[location],
-                    icon: './img/custom_pin.png'
+                    icon: './img/custom_pin.svg'
                 }
                 const marker = new google.maps.Marker(markerOptions);
                 markers.push(marker);
             }
             return markers;
         }
-        const renderMarkers = addMarkersClass(map);
 
         function clusterMarkers(map, markers) {
             const clustererOptions = { imagePath: './img/m' }
             const markerCluster = new MarkerClusterer(map, markers, clustererOptions);
         }
-        clusterMarkers(map, renderMarkers);
-
 
         /**
          * @function: 点击试骑店铺后 地图上增加标记
          * @return {*}
          * @todo: 增加多个标记：https://developers.google.com/maps/documentation/javascript/advanced-markers/accessible-markers?hl=zh-cn
          */
-        const onShop = function () {
-            const selectedShop = $('.shop-map .son-list .every-son-lsit');
-            selectedShop.click(function () {
-                // addMarker({ lat: -33.8741365, lng: 151.2553838 })
-                addMarker({ lat: -33.8688, lng: 151.2195 })
-            })
+        const onShop = function (shopCoordinate) {
+            // const selectedShop = $('.shop-map .son-list .every-son-lsit');
+            // selectedShop.click(function () {
+            //     // addMarker({ lat: -33.8741365, lng: 151.2553838 })
+            //     addMarker({ lat: -33.8688, lng: 151.2195 })
+            // })
         }
-        onShop();
+
+        // 处理店铺功能
+        const handleShopFunction = (arr) => {
+            // 建立一个映射关系
+            let mapping = {
+                '1': 'Test ride',
+                '2': 'Offline purchase',
+                '3': 'After-sales'
+            };
+
+            let result = [];
+
+            arr.forEach(item => {
+                if (mapping[item]) {
+                    result.push(mapping[item]);
+                }
+            });
+            return result;
+        }
 
         // 在地图上创建一个标记
-        const addMarker = function (shopPosition) {
-            handlemapCenterChange(shopPosition);
+        const addMarker = function (shopCoordinate, shopInfo) {
+            let info = {
+                ...shopInfo,
+                name: shopInfo.shopName,
+                street: shopInfo.shopAddress,
+                serviceType: handleShopFunction(shopInfo.shopFunction),
+                email: '',
+                phone: '',
+            }
+            handlemapCenterChange(shopCoordinate);
             const marker = new google.maps.Marker({
                 map: map,
-                position: shopPosition,
-                title: renderShop({
-                    name: '千里达',
-                    street: 'Karl-LiebKnecht—loduyad-Str.17 / 10178',
-                    city: 'Berlin / Germany',
-                    serviceType: ['Test ride', 'Offline purchase', 'After-sales'],
-                    email: 'lifeinmotionbs@gmail.com',
-                    phone: '+32 3534800073'
-                }),
+                position: shopCoordinate,
+                title: renderShop(info),
             });
+            console.log('marker:', marker);
 
             // 点击标记给弹框
             const infoWindow = new google.maps.InfoWindow();
@@ -772,7 +775,6 @@
                         <div class="name">${shopInfo.name}</div>
                         <div class="address">
                             <div>${shopInfo.street}</div>
-                            <div>${shopInfo.city}</div>
                         </div>
                         <div class="serviceType">
                             <span>${shopInfo.serviceType[0] ?? ''}</span>
@@ -907,7 +909,7 @@
         }
 
         /**
-          * @function: 获取下拉框选中的值的经纬度
+          * @function: 获取下拉框选中的值的经纬度，这是异步的
           * @return {*}
           * @todo: 函数后续需要完成的内容
           */
@@ -941,7 +943,6 @@
                     coordinate = { lat, lng };
                     console.log('获取坐标函数coordinate:', coordinate);
                     onSearch(coordinate)
-                    // resolve(coordinate);
                 }
             });
         }
@@ -1067,7 +1068,11 @@
         queryShop().then(function (data) {
             const shopMap = $('.shop-map');// tabs内容
             let shopMapHtml = '';
+            let allShopCoordinate = {}
             $.each(data, function (index, item) {
+                if (item.coordinate) {
+                    allShopCoordinate[item.shopId] = item.coordinate;
+                }
                 shopMapHtml = shopMapHtml + `<div class="every-list">
                     <div class="clickable">
                         <div>
@@ -1090,6 +1095,10 @@
             });
             shopMap.html(shopMapHtml);
 
+            // 等取到所有店铺坐标后，再渲染标记类
+            const renderMarkers = addMarkersClass(map, allShopCoordinate);
+            clusterMarkers(map, renderMarkers);
+
             // 是否展开子列表
             $('.shop-map .every-list .clickable').click(function () {
                 $(this).parent().find('.son-list').toggle();
@@ -1109,11 +1118,12 @@
                 const everySonList = $(this).parent().find('.son-list');
                 const shopName = $(this).parent().find('.shopName').text();
                 everySonList.click(function () {
-                    console.log('everySonList:', shopName);
                     // 取出店铺坐标
                     let coordinate = data.filter(item => item.shopName === shopName)[0].coordinate;
+                    let shopInfo = data.filter(item => item.shopName === shopName)[0];
                     if (coordinate && coordinate.lat) {
-                        handlemapCenterChange(coordinate)
+                        console.log('coordinate:', coordinate);
+                        addMarker(coordinate, shopInfo)
                     }
                 })
             });
@@ -1270,7 +1280,6 @@
         }
 
     </script>
-
 
 </body>
 
