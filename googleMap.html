@@ -1096,7 +1096,7 @@
             shopMap.html(shopMapHtml);
 
             // 等取到所有店铺坐标后，再渲染标记类
-            const renderMarkers = addMarkersClass(map, allShopCoordinate);
+            let renderMarkers = addMarkersClass(map, allShopCoordinate);
             clusterMarkers(map, renderMarkers);
 
             // 是否展开子列表
