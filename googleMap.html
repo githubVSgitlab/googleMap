@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>googleMap</title>
+</head>
+
+<body>
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .map-float {
+            width: 33%;
+            height: 100%;
+            background-color: #F5F5F5;
+            color: #282828;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .map-float .tabs {
+            width: 100%;
+            height: 12%;
+            height: calc(12% - 12px);
+            display: flex;
+            align-items: center;
+        }
+
+        .map-float .tabs div {
+            margin-left: 40px;
+            cursor: pointer;
+        }
+
+        .triangle {
+            width: 16%;
+            margin-left: 40px;
+            /* margin-left: 199px; */
+            display: flex;
+            justify-content: center;
+        }
+
+        .triangle div {
+            width: 0;
+            height: 0;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-bottom: 12px solid #fff;
+        }
+
+        .tabs-content {
+            height: 88%;
+            background-color: #fff;
+            /* background-color: red; */
+            margin-left: 10px;
+        }
+
+        .tabs-content .search-box {
+            width: 100%;
+            height: 64px;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+        }
+
+        .tabs-content .search-box #pac-input {
+            width: 87%;
+            height: 44px;
+            border: 1px solid #282828;
+            border-radius: 2px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* -------------shop-map------------- */
+        .tabs-content .shop-map {
+            width: 100%;
+            height: 90%;
+            overflow: hidden;
+            overflow-y: auto;
+            /* background-color: blue; */
+        }
+
+        .tabs-content .shop-map .every-list>div:first-child {
+            width: 87%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #EEEEEE;
+            margin: 0 auto;
+        }
+
+        .tabs-content .shop-map .every-list .clickable>div img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .tabs-content .shop-map .every-list {
+            cursor: pointer;
+        }
+
+        .tabs-content .shop-map .every-list div:first-child:hover {
+            background-color: #E9E9E9;
+        }
+
+        .tabs-content .shop-map .every-list .every-son-lsit {
+            background-color: #E9E9E9;
+        }
+
+        .tabs-content .shop-map .every-list .country-name {
+            margin-left: 10px;
+        }
+
+        .tabs-content .shop-map .son-list {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            display: none;
+        }
+
+        .tabs-content .shop-map .son-list .every-son-lsit {
+            background-color: #fff;
+            width: 87%;
+            height: 77px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .tabs-content .shop-map .son-list .every-son-lsit>div:nth-child(1) {
+            margin-left: 35px;
+        }
+
+        .tabs-content .shop-map .son-list .every-son-lsit .address {
+            font-size: 14px;
+            color: #686868;
+            margin-top: 4px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* -------------test-ride------------- */
+        .tabs-content .test-ride {
+            width: 100%;
+            height: calc(90% - 40px);
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        .tabs-content .test-ride .result {
+            margin: 0 auto;
+            width: 87%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .tabs-content .test-ride .every-list {
+            width: 87%;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        .tabs-content .test-ride .every-list .overview {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .tabs-content .test-ride .every-list .overview:hover {
+            background-color: #E9E9E9;
+            cursor: pointer;
+        }
+
+        .tabs-content .test-ride .every-list .overview>div:nth-child(2) {
+            display: flex;
+            align-items: center;
+        }
+
+        .tabs-content .test-ride .every-list .details {
+            display: none;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .tabs-content .test-ride .every-list .details .address {
+            color: #686868;
+            font-size: 12px;
+        }
+
+        .tabs-content .test-ride .every-list .details .option {
+            display: flex;
+            align-items: center;
+            margin-top: 13px;
+        }
+
+        .tabs-content .test-ride .every-list .details .option div {
+            display: flex;
+            align-items: center;
+        }
+
+        .tabs-content .test-ride .every-list .details .option>div:not(:first-child) {
+            margin-left: 14px;
+        }
+
+        .tabs-content .test-ride .every-list .details .option div span {
+            margin-left: 6px;
+            font-size: 14px;
+        }
+
+        .tabs-content .test-ride .every-list .apart {
+            color: #686868;
+        }
+
+        .tabs-content .test-ride .every-list .test-ride-arrow {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .tabs-content .test-ride .every-list .details .contact-information {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* margin-top: 20px; */
+            font-size: 14px;
+        }
+
+        .tabs-content .test-ride .every-list .details .contact-information .ride-button {
+            width: 135px;
+            height: 36px;
+            background: #BDFBA2;
+            border-radius: 20px;
+            border: 1px solid #282828;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* -------------after-sales------------- */
+        .tabs-content .after-sales {
+            width: 100%;
+            height: 90%;
+            overflow: hidden;
+            overflow-y: auto;
+            /* background-color: blue; */
+            display: none;
+        }
+
+        .tabs-content .after-sales .every-list>div:first-child {
+            width: 87%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #EEEEEE;
+            margin: 0 auto;
+        }
+
+        .tabs-content .after-sales .every-list .clickable:hover {
+            cursor: pointer;
+            background-color: #E9E9E9;
+        }
+
+        .tabs-content .after-sales .every-list .clickable>div img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .tabs-content .after-sales .every-list .after-sales-expand {
+            cursor: pointer;
+        }
+
+        .tabs-content .after-sales .every-list .country-name {
+            margin-left: 10px;
+        }
+
+        .tabs-content .after-sales .son-list {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            display: none;
+        }
+
+        .tabs-content .after-sales .son-list .every-son-lsit {
+            background-color: #fff;
+            width: 87%;
+            height: 60px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .tabs-content .after-sales .son-list .every-son-lsit:hover {
+            cursor: pointer;
+            background-color: #E9E9E9;
+        }
+
+        .tabs-content .after-sales .son-list .every-son-lsit>div:nth-child(1) {
+            margin-left: 35px;
+        }
+
+        .tabs-content .after-sales .son-list .every-son-lsit>div:nth-child(2) {
+            display: flex;
+            align-items: center;
+        }
+
+        .tabs-content .after-sales .son-list .every-son-lsit>div:nth-child(2) .count {
+            width: 25px;
+            height: 25px;
+            background-color: #BDFBA2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tabs-content .after-sales .son-list .every-son-lsit>div:nth-child(2) img {
+            margin-left: 10px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* -------------shopDetailsCard------------- */
+        .shopDetailsCard {
+            /* background-color: pink; */
+            width: 304px;
+            height: 270px;
+            padding: 31px 0 0 46px;
+        }
+
+        .shopDetailsCard .name {
+            font-size: 16px;
+            color: #282828;
+            margin-top: 20px;
+        }
+
+        .shopDetailsCard .address {
+            font-size: 12px;
+            color: #686868;
+            margin-top: 6px;
+        }
+
+        .shopDetailsCard .serviceType {
+            color: #7AAC64;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .shopDetailsCard .serviceType span:not(:nth-child(1)) {
+            margin-left: 10px;
+        }
+
+        .shopDetailsCard .contact {
+            font-size: 14px;
+            color: #282828;
+            margin-top: 17px;
+        }
+
+        .shopDetailsCard .ride-button {
+            width: 135px;
+            height: 36px;
+            background: #BDFBA2;
+            border-radius: 20px;
+            border: 1px solid #282828;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+
+
+    <div class="map-float">
+        <div class="tabs">
+            <div>Test ride shop</div>
+            <div>After-sales store</div>
+        </div>
+
+        <div class="triangle">
+            <div></div>
+        </div>
+
+        <div class="tabs-content">
+            <div class="search-box">
+                <input id="pac-input" class="controls" type="text" placeholder="Enter your city or address" />
+            </div>
+
+
+            <!-- -------------shop-map------------- -->
+            <div class="shop-map">
+                <!-- <div class="every-list">
+                    <div class="clickable">
+                        <div>
+                            <img src="./assets/country_icon.png" width="20px" height="20px" alt="icon">
+                            <span class="country-name">Deutschland</span>
+                        </div>
+                        <img class="shop-map-expand" src="./assets/expand.svg" alt="expand">
+                    </div>
+
+                    <div class="son-list">
+                        <div class="every-son-lsit">
+                            <div>
+                                <div>LEMMO FLAGSHIP BERLIN</div>
+                                <div class="address" title="">Karl-LiebKnecht-Str.17 / 10178 Berlin / Germany</div>
+                            </div>
+                            <img src="./assets/right_arrow.svg" alt="right arrow">
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+
+            <!-- -------------test-ride------------- -->
+            <div class="test-ride">
+                <!-- <div class="result">5 results</div>
+                <div class="list">
+                    <div class="every-list">
+                        <div class="overview">
+                            <div class="name">TheQool</div>
+                            <div>
+                                <span class="apart">2.6km</span>
+                                <img class="test-ride-arrow" src="./assets/right_arrow.svg" alt="right arrow">
+                            </div>
+                        </div>
+
+                        <div class="details">
+                            <div class="address">
+                                <div>Karl-LiebKnecht—loduyad-Str.17 / 10178</div>
+                                <div>Berlin / Germany</div>
+                            </div>
+
+                            <div class="option">
+                                <div>
+                                    <img src="./assets/test_ride.png" alt="">
+                                    <span>Test ride</span>
+                                </div>
+                                <div>
+                                    <img src="./assets/offline_purchase.png" alt="">
+                                    <span>Offline purchase</span>
+                                </div>
+                                <div>
+                                    <img src="./assets/after_sales.png" alt="">
+                                    <span>After-sales</span>
+                                </div>
+                            </div>
+
+                            <div class="contact-information">
+                                <div>
+                                    <div>lifeinmotionbs@gmail.com</div>
+                                    <div>+86 13211221122</div>
+                                </div>
+                                <div class="ride-button">Book a test ride</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+
+            <!-- -------------after-sales------------- -->
+            <div class="after-sales">
+                <!-- <div class="every-list">
+                    <div class="clickable">
+                        <div>
+                            <img src="./assets/country_icon.png" width="20px" height="20px" alt="icon">
+                            <span class="country-name">Deutschland</span>
+                        </div>
+                        <img class="after-sales-expand" src="./assets/expand.svg" alt="expand">
+                    </div>
+
+                    <div class="son-list">
+                        <div class="every-son-lsit">
+                            <div class="city-name">Berlin</div>
+                            <div>
+                                <div class="count">5</div>
+                                <img src="./assets/right_arrow.svg" alt="right arrow">
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7l7QchrD_5JfAa8ZUEYZHcx03tYCUyNI&libraries=places"></script>
+    <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+    <script src="https://cdn.shopify.com/s/files/1/0574/9748/5373/files/jquery.min.js?v=1663384575"></script>
+
+    <script>
+        const COUNTRY_IMG = 'https://cdn.shopifycdn.net/s/files/1/0675/2380/5408/files/mapImg-country_icon_5af440bf-c531-4a3f-885e-4667e1136dfe.png?v=1704969155'
+        const EXPAND_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-expand.svg?v=1704969154'
+        const RETRACT_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-retract.svg?v=1704969155'
+        const RIGHT_ARROW_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-right_arrow.svg?v=1704969154'
+        const DOWN_ARROW_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-down_arrow.svg?v=1704969154'
+        const TEST_RIDE_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-test_ride.png?v=1704969155'
+        const OFFLINE_PURCHASE_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-offline_purchase.png?v=1704969155'
+        const AFTER_SALES_IMG = 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/mapImg-after_sales.png?v=1704969154'
+
+        const GERMANY_FLAG = 'https://cdn.shopifycdn.net/static/images/flags/de.svg'
+        const FRANCE_FLAG = 'https://cdn.shopify.com/static/images/flags/fr.svg'
+        const BELGIUM_FLAG = 'https://cdn.shopify.com/static/images/flags/be.svg'
+        const NETHERLANDS_FLAG = 'https://cdn.shopify.com/static/images/flags/nl.svg'
+        const AUSTRIA_FLAG = 'https://cdn.shopify.com/static/images/flags/at.svg'
+        const UNITED_KINGDOM_FLAG = 'https://cdn.shopify.com/static/images/flags/gb.svg'
+    </script>
+
+    <!-- 地图相关 -->
+    <script defer>
+        $(document).ready(function () {
+            initAutocomplete();
+        });
+
+        // let mapCenter = { lat: -33.8688, lng: 151.2195 };// 悉尼 
+        let mapCenter = { lat: 48.8668436, lng: 2.2721836 }// 法国
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: mapCenter,// lat维度，lng经度
+            // zoom: 13,
+            zoom: 7,
+            mapTypeId: "roadmap",
+            disableDefaultUI: true,// 拿掉地图上所有控制按钮，参考：https://segmentfault.com/a/1190000019788430
+        });
+
+        // 在mapCenter变化时触发自定义事件
+        $(document).on('mapCenterChanged', function () {
+            map.setCenter({ lat: mapCenter.lat, lng: mapCenter.lng });
+        });
+
+        /**
+         * @function: 在mapCenter发生变化时调用此函数
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         * @param {*} position:{lat: 32.0615513, lng: 118.7915619}
+         */
+        const handlemapCenterChange = function (position) {
+            mapCenter = position;
+            $(document).trigger('mapCenterChanged');
+        }
+
+        /**
+         * @function: 初始化带搜索框的地图
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const initAutocomplete = function () {
+            // Create the search box and link it to the UI element.
+            const input = document.getElementById("pac-input");
+            const searchBox = new google.maps.places.SearchBox(input);
+
+            // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);// 搜索框位置
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener("bounds_changed", () => {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            let markers = [];
+
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener("places_changed", () => {
+                const places = searchBox.getPlaces();
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach((marker) => {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                const bounds = new google.maps.LatLngBounds();
+
+                places.forEach((place) => {
+                    if (!place.geometry || !place.geometry.location) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+
+                    const icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25),
+                    };
+
+                    // Create a marker for each place.
+                    markers.push(
+                        new google.maps.Marker({
+                            map,
+                            icon,
+                            title: place.name,
+                            position: place.geometry.location,
+                        }),
+                    );
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+        }
+
+        /**
+         * @function: 地图增加标记类，参考：https://developers.google.cn/codelabs/maps-platform/maps-platform-101-js?hl=zh-cn#7
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const addMarkersClass = function (map, allShopCoordinate) {
+            let locations = allShopCoordinate
+            const markers = [];
+            for (const location in locations) {
+                const markerOptions = {
+                    map: map,
+                    position: locations[location],
+                    // icon: './img/custom_pin.svg'
+                    icon: 'https://cdn.shopify.com/s/files/1/0675/2380/5408/files/custom_pin.svg?v=1705284712',
+                }
+                const marker = new google.maps.Marker(markerOptions);
+                console.log('类-marker:', marker);
+                markers.push(marker);
+            }
+            return markers;
+        }
+
+        function clusterMarkers(map, markers) {
+            // const clustererOptions = { imagePath: './img/m' }
+            // const markerCluster = new MarkerClusterer(map, markers, clustererOptions);
+        }
+
+        /**
+         * @function: 点击试骑店铺后 地图上增加标记
+         * @return {*}
+         * @todo: 增加多个标记：https://developers.google.com/maps/documentation/javascript/advanced-markers/accessible-markers?hl=zh-cn
+         */
+        const onShop = function (shopCoordinate) {
+            // const selectedShop = $('.shop-map .son-list .every-son-lsit');
+            // selectedShop.click(function () {
+            //     // addMarker({ lat: -33.8741365, lng: 151.2553838 })
+            //     addMarker({ lat: -33.8688, lng: 151.2195 })
+            // })
+        }
+
+        // 处理店铺功能
+        const handleShopFunction = (arr) => {
+            // 建立一个映射关系
+            let mapping = {
+                '1': 'Test ride',
+                '2': 'Offline purchase',
+                '3': 'After-sales'
+            };
+
+            let result = [];
+
+            arr.forEach(item => {
+                if (mapping[item]) {
+                    result.push(mapping[item]);
+                }
+            });
+            return result;
+        }
+
+        // 在地图上创建一个标记
+        const addMarker = function (shopCoordinate, shopInfo) {
+            let info = {
+                ...shopInfo,
+                name: shopInfo.shopName,
+                street: shopInfo.shopAddress,
+                serviceType: handleShopFunction(shopInfo.shopFunction),
+                email: '',
+                phone: '',
+            }
+            handlemapCenterChange(shopCoordinate);
+            let marker = new google.maps.Marker({
+                map: map,
+                position: shopCoordinate,
+                title: renderShop(info),
+            });
+
+            let lat = marker.position.lat();
+            let lng = marker.position.lng();
+            let coordinate = { lat, lng };
+            console.log('marker:', marker);
+            console.log('coordinate:', coordinate);
+
+            // 点击标记给弹框
+            const infoWindow = new google.maps.InfoWindow();
+            marker.addListener("click", ({ domEvent, latLng }) => {
+                const { target } = domEvent;
+
+                infoWindow.close();
+                infoWindow.setContent(marker.title);
+                infoWindow.open(marker.map, marker);
+            });
+        }
+
+        const renderShop = function (shopInfo) {
+            return `<div class="shopDetailsCard">
+                        <div class="name">${shopInfo.name}</div>
+                        <div class="address">
+                            <div>${shopInfo.street}</div>
+                        </div>
+                        <div class="serviceType">
+                            <span>${shopInfo.serviceType[0] ?? ''}</span>
+                            <span>${shopInfo.serviceType[1] ?? ''}</span>
+                            <span>${shopInfo.serviceType[2] ?? ''}</span>
+                        </div>
+                        <div class="contact">
+                            <div>${shopInfo.email}</div>
+                            <div>${shopInfo.phone}</div>
+                        </div>
+                        <div class="ride-button">Book a test ride</div>
+                    </div>`
+        }
+
+        // /**
+        //  * @function: 售后，点击城市
+        //  * @return {*}
+        //  * @todo: 函数后续需要完成的内容
+        //  * @todo: 参考：https://blog.csdn.net/weixin_30457551/article/details/96157612
+        //  * @todo: 参考：https://www.cnblogs.com/milkmap/archive/2012/04/11/2442430.html
+        //  */
+        // const onCity = function () {
+        //     const selectedCity = $('.after-sales .every-list .son-list');
+
+        //     var request = {
+        //         placeId: 'ChIJuSwU55ZS8DURiqkPryBWYrk',
+        //     };
+
+        //     selectedCity.click(function () {
+        //         // console.log('11:', 11);
+        //         // let service = new google.maps.places.PlacesService(map);
+        //         // service.getDetails(request, function (place, status) {
+        //         //     if (status == google.maps.places.PlacesServiceStatus.OK) {
+        //         //         // 在这里，你可以访问 place 对象，其中包括行政区域的边界信息
+        //         //         var boundaries = place.geometry.viewport;
+        //         //         console.log('boundaries:', boundaries);
+        //         //     }
+        //         // });
+
+
+        //         // 使用 Geocoding API 请求获取北京的 Place ID
+        //         var geocoder = new google.maps.Geocoder();
+        //         var address = '北京';
+
+        //         geocoder.geocode({ 'address': address }, function (results, status) {
+        //             if (status === google.maps.GeocoderStatus.OK) {
+        //                 // 获取第一个结果的 Place ID
+        //                 var placeId = results[0].place_id;
+        //                 console.log('北京的 Place ID 是：', placeId);
+        //             } else {
+        //                 console.error('Geocode 失败，原因：', status);
+        //             }
+        //         });
+        //     })
+        // }
+        // onCity();
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- tabs交互操作 + 数据查询 -->
+    <script defer>
+        $(document).ready(function () {
+            getSelectedTab();
+            onTab();
+            onSearch();
+            getCoordinate();
+        })
+
+        // const testRideTab = $('.tabs div:eq(0)');
+        // const afterSalesTab = $('.tabs div:eq(1)');
+        // const triangle = $('.triangle');// 三角形
+        // const shopMap = $('.shop-map');// tabs内容
+        // const testRide = $('.test-ride');// tabs内容
+        // const afterSales = $('.after-sales');// tabs内容
+        // const searchBox = $('#pac-input');
+        let selectedTab = null;
+
+        /**
+         * @function: 获取选中的tab
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const getSelectedTab = function () {
+            // 给每个tab绑定点击事件
+            $('.tabs div').on('click', function () {
+                // 移除之前的选中状态
+                $('.tabs div').removeClass('selected');
+
+                // 添加选中状态到当前点击的选项
+                $(this).addClass('selected');
+
+                let selectedText = $(this).text();
+                if (selectedText === 'After-sales store') {
+                    selectedTab = 'afterSales';
+                } else {
+                    selectedTab = 'testRide';
+                }
+            });
+        }
+
+        /**
+         * @function: tab切换
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const onTab = function () {
+            const searchBox = $('#pac-input');
+            const afterSales = $('.after-sales');// tabs内容
+            const testRide = $('.test-ride');// tabs内容
+            const shopMap = $('.shop-map');// tabs内容
+            const triangle = $('.triangle');// 三角形
+            const afterSalesTab = $('.tabs div:eq(1)');
+            const testRideTab = $('.tabs div:eq(0)');
+
+            testRide.hide();
+            afterSales.hide();
+
+            afterSalesTab.click(function () {
+                shopMap.hide();
+                afterSales.show();
+                triangle.css('margin-left', '199px');
+                searchBox.val('');
+                queryAfterSales();
+            })
+
+            testRideTab.click(function () {
+                shopMap.show();
+                afterSales.hide();
+                triangle.css('margin-left', '40px');
+                searchBox.val('')
+            })
+        }
+
+        /**
+          * @function: 获取下拉框选中的值的经纬度，这是异步的
+          * @return {*}
+          * @todo: 函数后续需要完成的内容
+          */
+        let autocomplete;
+        const getCoordinate = function () {
+            let coordinate;
+            const input = document.getElementById("pac-input");
+            const defaultBounds = {
+                north: mapCenter.lat + 0.1,
+                south: mapCenter.lat - 0.1,
+                east: mapCenter.lng + 0.1,
+                west: mapCenter.lng - 0.1,
+            };
+            const options = {
+                bounds: defaultBounds,
+                componentRestrictions: { country: "us" },
+                fields: ["address_components", "geometry", "icon", "name"],
+                strictBounds: false,
+                types: ["establishment"],
+            };
+
+            // 初始化 Autocomplete 服务
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            // 添加事件监听器，当用户选择地址时触发
+            autocomplete.addListener('place_changed', function () {
+                let selectedPlace = autocomplete.getPlace();
+                if (selectedPlace && selectedPlace.geometry) {
+                    let lat = selectedPlace.geometry.location.lat();
+                    let lng = selectedPlace.geometry.location.lng();
+                    coordinate = { lat, lng };
+                    console.log('获取坐标函数coordinate:', coordinate);
+                    onSearch(coordinate)
+                }
+            });
+        }
+
+        /**
+         * @function: 搜索框
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const onSearch = function (coordinate) {
+            const shopMap = $('.shop-map');// tabs内容
+            const testRide = $('.test-ride');// tabs内容
+            const afterSalesTab = $('.tabs div:eq(1)');
+            const searchBox = $('#pac-input');
+
+            // 只有搜索框被触发，这里才有效果
+            if (coordinate) {
+                console.log('搜索框:', coordinate);
+                queryTestRide(coordinate)
+            }
+
+            searchBox.on('input', function () {
+                const inputValue = $(this).val();
+                if (inputValue && selectedTab != 'afterSales') {
+                    console.log('有值 得调接口:',);
+                    shopMap.hide();
+                    testRide.show();
+
+                    afterSalesTab.click(function () {
+                        testRide.hide();
+                    })
+                }
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ---------------------------------------------查询数据---------------------------------------------
+        const BASE_URL = 'https://api.lemmo.cn/mall/shop/queryAll';
+        const os = (function () {
+            let ua = navigator.userAgent,
+                isWindowsPhone = /(?:Windows Phone)/.test(ua),
+                isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+                isAndroid = /(?:Android)/.test(ua),
+                isFireFox = /(?:Firefox)/.test(ua),
+                isChrome = /(?:Chrome|CriOS)/.test(ua),
+                isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox &&
+                    /(?:Tablet)/.test(ua)),
+                isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+                isPc = !isPhone && !isAndroid && !isSymbian;
+            return isPc ? 'pc' : isPhone ? 'iOS' : isAndroid ? 'android' : 'other'
+        })();
+        const requestHeader = {
+            'Content-Type': 'application/json',
+            'lang': '', // 语言[zh-中文/en-英文/de-德语]
+            'clientType': os,  // 客户端类型 1-pc/2-android/3-iOS/4-h5/5-other
+        }
+
+        /**
+         * @function: 查询店铺
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         * @param {*} shopFunction 不传-返回全部门店；1-试骑门店；2-售后门店；3-线下销售点；
+         */
+        const queryShop = function (params) {
+            // console.log('params:', params);
+            let urlParams;
+            if (!params) {
+                urlParams = ''
+            } else if (params === 1) {
+                urlParams = '?shopFunction=' + 1
+            } else if (params === 2) {
+                urlParams = '?shopFunction=' + 2
+            } else if (typeof params === 'object' && params.lat) {
+                urlParams = '?shopFunction=1&' + $.param(params)
+            }
+            // console.log('urlParams:', urlParams);
+
+            const options = {
+                url: BASE_URL + urlParams,
+                method: 'GET',
+                headers: requestHeader,
+                dataType: 'json'
+            };
+
+            return new Promise(function (resolve, reject) {
+                $.ajax(options)
+                    .done(function (res) {
+                        if (res && res.code === 200) {
+                            resolve(res.data);
+                        } else {
+                            reject(new Error('获取数据失败'));
+                        }
+                    })
+                    .fail(function (xhr, textStatus, errorThrown) {
+                        console.error('查询失败:', errorThrown);
+                    })
+            });
+        }
+
+        /**
+         * @function: 渲染国旗
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         * @param {*} countryName-国家名称
+         */
+        const renderFlag = (countryName) => {
+            switch (countryName) {
+                case 'France': return FRANCE_FLAG;
+                case 'Germany': return GERMANY_FLAG;
+                case 'Belgium': return BELGIUM_FLAG;
+                case 'Netherlands': return NETHERLANDS_FLAG;
+                case 'United Kingdom': return UNITED_KINGDOM_FLAG;
+                case 'Austria': return AUSTRIA_FLAG;
+                default: return '';
+            }
+        }
+
+        /**
+         * @function: 初始时查所有店铺
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        queryShop().then(function (data) {
+            const shopMap = $('.shop-map');// tabs内容
+            let shopMapHtml = '';
+            let allShopCoordinate = {}
+            $.each(data, function (index, item) {
+                if (item.coordinate) {
+                    allShopCoordinate[item.shopId] = item.coordinate;
+                }
+                shopMapHtml = shopMapHtml + `<div class="every-list">
+                    <div class="clickable">
+                        <div>
+                            <img src="${renderFlag(item.country.countryName)}" alt="${item.country.countryName}">
+                            <span class="country-name">${item.country.countryName}</span>
+                        </div>
+                        <img class="shop-map-expand" src="./assets/expand.svg" alt="expand">
+                    </div>
+                    
+                    <div class="son-list">
+                        <div class="every-son-lsit">
+                            <div>
+                                <div class="shopName">${item.shopName}</div>
+                                <div class="address" title="">${item.shopAddress}</div>
+                            </div>
+                            <img src="./assets/right_arrow.svg" alt="right arrow">
+                        </div>
+                    </div>
+                </div>`
+            });
+            shopMap.html(shopMapHtml);
+
+            // 等取到所有店铺坐标后，再渲染标记类
+            let renderMarkers = addMarkersClass(map, allShopCoordinate);
+            clusterMarkers(map, renderMarkers);
+
+            // 是否展开子列表
+            $('.shop-map .every-list .clickable').click(function () {
+                $(this).parent().find('.son-list').toggle();
+
+                const expandSrc = './assets/expand.svg';
+                const retractSrc = './assets/retract.svg';
+
+                let currentImg = $(this).find('.shop-map-expand');
+                let currentSrc = $(this).find('.shop-map-expand').attr('src')
+                if (currentSrc.includes('expand.svg')) {
+                    currentImg.attr('src', retractSrc);
+                } else {
+                    currentImg.attr('src', expandSrc);
+                }
+
+                // 子列表给点击事件，刷新地图中心
+                const everySonList = $(this).parent().find('.son-list');
+                const shopName = $(this).parent().find('.shopName').text();
+                everySonList.click(function () {
+                    // 取出店铺坐标
+                    let coordinate = data.filter(item => item.shopName === shopName)[0].coordinate;
+                    let shopInfo = data.filter(item => item.shopName === shopName)[0];
+                    if (coordinate && coordinate.lat) {
+                        addMarker(coordinate, shopInfo)
+                    }
+                })
+            });
+        })
+
+        /**
+         * @function: 查试骑店铺
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const queryTestRide = function (params) {
+            let testRideHtml = '';
+            // console.log('params:', params);
+            queryShop(params).then(function (data) {
+                const testRide = $('.test-ride');// tabs内容
+                // console.log('data:', data);
+                testRideHtml += `<div class="result">${data.length} results</div>`
+                $.each(data, function (index, item) {
+                    // console.log('item:', item);
+                    testRideHtml = testRideHtml + `
+                    <div class="every-list">
+                        <div class="overview">
+                            <div class="name">${item.shopName}</div>
+                            <div>
+                                <span class="apart">${item.distance ?? '-'} km</span>
+                                <img class="test-ride-arrow" src="./assets/right_arrow.svg" alt="right arrow">
+                            </div>
+                        </div>
+
+                        <div class="details">
+                            <div class="address">
+                                <div>${item.shopAddress}</div>
+                            </div>
+
+                            <div class="option">
+                            ${item.shopFunction.includes('1')
+                            ? `<div>
+                                        <img src="./assets/test_ride.png" alt="">
+                                        <span>Test ride</span>
+                                    </div>`
+                            : ''}
+
+                            ${item.shopFunction.includes('3')
+                            ? `<div>
+                                        <img src="./assets/offline_purchase.png" alt="">
+                                        <span>Offline purchase</span>
+                                    </div>`
+                            : ''}
+
+                            ${item.shopFunction.includes('2')
+                            ? `<div>
+                                        <img src="./assets/after_sales.png" alt="">
+                                        <span>After-sales</span>
+                                    </div>`
+                            : ''}
+                            </div>
+
+                            <div class="contact-information">
+                                <div>
+                                </div>
+                                <div class="ride-button">Book a test ride</div>
+                            </div>
+                        </div>
+                    </div>`
+                });
+                testRide.html(testRideHtml);
+
+                // 是否展开子列表
+                $('.test-ride .every-list .overview').click(function () {
+                    $(this).parent().find('.details').toggle();
+                    // console.log('this:', $(this));
+
+                    const rightArrowSrc = './assets/right_arrow.svg';
+                    const downArrowSrc = './assets/down_arrow.svg';
+
+                    let currentImg = $(this).find('.test-ride-arrow');
+                    let currentSrc = $(this).find('.test-ride-arrow').attr('src')
+                    if (currentSrc.includes('right_arrow.svg')) {
+                        currentImg.attr('src', downArrowSrc);
+                        $(this).parent().css('height', '203px');
+                        $(this).css('height', '60px');
+                        $(this).css('border-bottom', 'none');
+                    } else {
+                        currentImg.attr('src', rightArrowSrc);
+                        $(this).parent().css('height', '60px');
+                        $(this).css('height', '100%');
+                        $(this).css('border-bottom', '1px solid #EEEEEE');
+                    }
+                });
+            })
+        }
+
+        /**
+         * @function: 查售后店铺
+         * @return {*}
+         * @todo: 函数后续需要完成的内容
+         */
+        const queryAfterSales = function () {
+            queryShop(2).then(function (data) {
+                console.log('data:', data);
+                const afterSales = $('.after-sales');// tabs内容
+                let afterSalesHtml = '';
+                $.each(data, function (index, item) {
+                    afterSalesHtml = afterSalesHtml + `<div class="every-list">
+                    <div class="clickable">
+                        <div>
+                            <img src="${renderFlag(item.country.countryName)}" alt="${item.country.countryName}">
+                            <span class="country-name">${item.country.countryName}</span>
+                        </div>
+                        <img class="after-sales-expand" src="./assets/expand.svg" alt="expand">
+                    </div>
+
+                    <div class="son-list">
+                        <div class="every-son-lsit">
+                            <div class="city-name">${item.city.cityName}</div>
+                            <div>
+                                <div class="count">5</div>
+                                <img src="./assets/right_arrow.svg" alt="right arrow">
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                });
+                afterSales.html(afterSalesHtml);
+
+                // 是否展开子列表
+                $('.after-sales .every-list .clickable').click(function () {
+                    $(this).parent().find('.son-list').toggle();
+
+                    const expandSrc = './assets/expand.svg';
+                    const retractSrc = './assets/retract.svg';
+
+                    let currentImg = $(this).find('.after-sales-expand');
+                    let currentSrc = $(this).find('.after-sales-expand').attr('src')
+                    if (currentSrc.includes('expand.svg')) {
+                        currentImg.attr('src', retractSrc);
+                    } else {
+                        currentImg.attr('src', expandSrc);
+                    }
+
+                    // // 子列表给点击事件，刷新地图中心
+                    // const everySonList = $(this).parent().find('.son-list');
+                    // const shopName = $(this).parent().find('.shopName').text();
+                    // everySonList.click(function () {
+                    //     console.log('everySonList:', shopName);
+                    //     // 取出店铺坐标
+                    //     let coordinate = data.filter(item => item.shopName === shopName)[0].coordinate;
+                    //     if (coordinate && coordinate.lat) {
+                    //         handlemapCenterChange(coordinate)
+                    //     }
+                    // })
+                });
+            })
+        }
+
+    </script>
+
+</body>
+
+</html>

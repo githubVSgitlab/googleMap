@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="370px" height="321.682922px" viewBox="0 0 370 321.682922" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>card@1x</title>
+    <defs>
+        <path d="M346,0 C348.209139,-4.05812251e-16 350,1.790861 350,4 L350,286 C350,288.209139 348.209139,290 346,290 L188.999,290 L175.650791,301.442179 C175.307509,301.736421 174.814562,301.760941 174.446336,301.515739 L174.349209,301.442179 L161.001,290 L4,290 C1.790861,290 2.705415e-16,288.209139 0,286 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 L346,0 Z" id="path-1"></path>
+        <filter x="-4.3%" y="-5.0%" width="108.6%" height="109.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Store-Map" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Test-ride-shop" transform="translate(-775.000000, -803.000000)">
+            <g id="card" transform="translate(785.000000, 813.000000)">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

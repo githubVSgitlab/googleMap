@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7.82526005px" height="12.8284271px" viewBox="0 0 7.82526005 12.8284271" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>next-map@1x</title>
+    <g id="Store-Map" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Shop-map" transform="translate(-422.386901, -940.585786)" stroke="#CCCCCC" stroke-width="2">
+            <path d="M423.801115,942 L428.792042,946.990927 M423.807021,952 L428.797948,947.009073" id="next-map"></path>
+        </g>
+    </g>
+</svg>
